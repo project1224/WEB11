@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct HiveMQ Web Client</title>
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        #messages {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .message {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <h1>MQTT Web Client (Direct HiveMQ)</h1>
+    <p>Nhận tin nhắn từ HiveMQ Cloud trực tiếp qua WebSocket.</p>
+    
+    <div id="messages">No messages yet...</div>
+
+    <script>
+        // Thông tin kết nối đến HiveMQ Cloud
+        const brokerUrl = 'wss://fd873da0fa7248d3b85f7580f8543f7a.s1.eu.hivemq.cloud:8884/mqtt';
+        const options = {
+            username: 'Kettran', // Thay bằng tên đăng nhập của bạn
+            password: 'Kettran123@', // Thay bằng mật khẩu của bạn
+            connectTimeout: 5000, // Thời gian chờ kết nối
+            clientId: `web_client_${Math.random().toString(16).substr(2, 8)}`, // Tạo clientId duy nhất
+            clean: true // Chế độ clean session
+        };
+
+        // Kết nối tới HiveMQ Cloud broker
+        const client = mqtt.connect(brokerUrl, options);
+
+        const messagesDiv = document.getElementById('messages');
+
+        client.on('connect', () => {
+            console.log('Connected to HiveMQ Cloud');
+            const newMessage = document.createElement('div');
+            newMessage.className = 'message';
+            newMessage.textContent = 'Connected to HiveMQ Cloud!';
+            messagesDiv.appendChild(newMessage);
+
+            // Đăng ký topic Setpoints/SATemp
+            client.subscribe('Setpoints/SATemp', (err) => {
+                if (err) {
+                    console.error('Failed to subscribe:', err);
+                } else {
+                    console.log('Subscribed to topic: Setpoints/SATemp');
+                }
+            });
+        });
+
+        // Nhận tin nhắn từ broker
+        client.on('message', (topic, message) => {
+            console.log(`Message received on ${topic}: ${message.toString()}`);
+            const newMessage = document.createElement('div');
+            newMessage.className = 'message';
+            newMessage.textContent = `Topic: ${topic}, Message: ${message.toString()}`;
+            messagesDiv.appendChild(newMessage);
+        });
+
+        client.on('error', (err) => {
+            console.error('Connection error:', err);
+        });
+
+        client.on('reconnect', () => {
+            console.log('Reconnecting to HiveMQ Cloud...');
+        });
+
+        client.on('close', () => {
+            console.log('Connection closed');
+        });
+    </script>
+</body>
+</html>

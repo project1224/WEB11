@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        /* Cấu trúc chung của trang */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f0f9ff; /* Nền sáng nhẹ */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+            text-align: center; /* Căn giữa toàn bộ nội dung */
+        }
+
+        /* Lời chào ở đầu trang */
+        h1 {
+            font-size: 48px; /* Kích thước lớn cho lời chào */
+            color: #4CAF50;
+            margin-top: 40px; /* Đặt khoảng cách giữa đầu trang và lời chào */
+            margin-bottom: 30px; /* Giảm khoảng cách dưới lời chào */
+            text-align: center;
+            font-weight: 600; /* Làm cho chữ đậm đà hơn */
+        }
+
+        /* Container của form đăng nhập */
+        .login-container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+            box-sizing: border-box;
+            margin: 0 auto; /* Căn giữa form đăng nhập */
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        input {
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #4CAF50; /* Đổi màu viền khi focus */
+            outline: none;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Cải tiến phần lỗi */
+        .error {
+            color: #f44336;
+            font-size: 0.9em;
+        }
+
+        /* CSS cho biểu tượng con mắt */
+        .password-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        #togglePassword {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 18px;
+            color: #555;
+            transition: color 0.3s;
+        }
+
+        #togglePassword:hover {
+            color: #4CAF50;
+        }
+
+        /* Hiệu ứng cho form khi hover */
+        .login-container:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <!-- Lời chào ở đầu trang -->
+        <h1>Welcome to the Login Page!</h1>
+
+        <!-- Container của form đăng nhập -->
+        <div class="login-container">
+            <h2>Login</h2>
+            <form action="/login" method="POST">
+                <input type="text" name="username" placeholder="Username" required />
+
+                <div class="password-container">
+                    <input type="password" name="password" id="passwordInput" placeholder="Password" required />
+                    <span id="togglePassword">👁️</span>
+                </div>
+
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript để hiển thị hoặc ẩn mật khẩu
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('passwordInput');
+
+        togglePassword.addEventListener('click', () => {
+            // Kiểm tra kiểu hiển thị của ô nhập mật khẩu
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+
+            // Thay đổi biểu tượng con mắt
+            togglePassword.textContent = type === 'password' ? '👁️' : '🙈';
+        });
+    </script>
+</body>
+</html>
